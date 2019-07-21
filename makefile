@@ -1,10 +1,34 @@
 # Simple build
-all: run
+RM = rm
+CFLAGS = -std=c99 -g -Wall -I.
 
-run:prompt.exe
-	./prompt.exe
+ifeq ($(OS),Windows_NT)
+	EXT = .exe
+	LIBS = 
+	RM = del
+else
+	EXT = .bin
+	LIBS = -ledit 
+endif
 
-%.exe:%.c
-	gcc -o $@ $< -g 
+INC = mpc.h
+OUT = nlisp$(EXT)
+OBJ = nlisp.o mpc.o
 
+.PHONY: all
+all: clean run
+
+.PHONY: clean
+clean: 
+	$(RM) *.o 
+
+.PHONY: run
+run:$(OUT)
+	./$(OUT)
+
+$(OUT): $(OBJ) $(INC)
+	gcc -o $@ $^ $(LIBS) $(CFLAGS)  
+
+%.o : %.c $(INC)
+	gcc -c -o $@ $< $(CFLAGS) 
 
