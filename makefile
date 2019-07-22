@@ -16,11 +16,14 @@ OUT = nlisp$(EXT)
 OBJ = nlisp.o mpc.o
 
 .PHONY: all
-all: clean run
+all: clean build 
 
 .PHONY: clean
 clean: 
 	$(RM) *.o 
+
+.PHONY: build
+build: $(OUT) 
 
 .PHONY: run
 run:$(OUT)
